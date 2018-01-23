@@ -12,6 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 
+# Set a custom client_max_body_size if provided
+if [ -n "${CLIENT_MAX_BODY_SIZE+1}" ]; then
+    sed -i "s/client_max_body_size .*$/client_max_body_size ${CLIENT_MAX_BODY_SIZE};/g;" /etc/nginx/nginx.conf
+fi
+
 # Env says we're using SSL
 if [ -n "${ENABLE_SSL+1}" ] && [ "${ENABLE_SSL,,}" = "true" ]; then
   echo "Enabling SSL..."
