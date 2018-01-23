@@ -96,6 +96,7 @@ proxy_config () {
       # Tell nginx the address and port of the certification service.
     echo "Activate certification service for server ${SERVER_NAME}..."
     sed -i "s/{{CERT_SERVICE}}/${CERT_SERVICE}/g;" ${PROXY_FILE}
+    sed -i "s/{{CERT_SERVICE}}/${CERT_SERVICE}/g;" /etc/nginx/conf.d/default.conf
     sed -i "s/#letsencrypt# //g;" ${PROXY_FILE}
     sed -i "s/#letsencrypt# //g;" /etc/nginx/conf.d/default.conf
   fi
