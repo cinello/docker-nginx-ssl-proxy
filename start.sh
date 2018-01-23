@@ -97,6 +97,7 @@ proxy_config () {
     echo "Activate certification service for server ${SERVER_NAME}..."
     sed -i "s/{{CERT_SERVICE}}/${CERT_SERVICE}/g;" ${PROXY_FILE}
     sed -i "s/#letsencrypt# //g;" ${PROXY_FILE}
+    sed -i "s/#letsencrypt# //g;" /etc/nginx/conf.d/default.conf
   fi
 
   if [ -n "${WEB_SOCKETS+1}" ] && [ "${WEB_SOCKETS,,}" = "true" ]; then
@@ -107,6 +108,11 @@ proxy_config () {
   # Tell nginx the address and port of the service to proxy to
   echo "Set target service for server ${SERVER_NAME} to ${TARGET_SERVICE}..."
   sed -i "s|{{TARGET_SERVICE}}|${TARGET_SERVICE}|" ${PROXY_FILE}
+  if [ -n "${IS_MULTI+1}" ] && [ "${IS_MULTI,,}" = "true" ]; then
+    sed -i "s|{{TARGET_SERVICE_NAME}}|target_service_${VAR_SERVER_NAME}|" ${PROXY_FILE}
+  else
+    sed -i "s|{{TARGET_SERVICE_NAME}}|target_service|" ${PROXY_FILE}
+  fi
 
   # Tell nginx the name of the service
   echo "Set server name for server ${SERVER_NAME}..."
